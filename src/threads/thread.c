@@ -243,6 +243,7 @@ thread_unblock (struct thread *t)
   ASSERT (t->status == THREAD_BLOCKED);
   list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
+  // Proj 0
   sema_up(&t->timer_sema);
   intr_set_level (old_level);
 }

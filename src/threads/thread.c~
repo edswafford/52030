@@ -99,7 +99,7 @@ thread_init (void)
   initial_thread->status = THREAD_RUNNING;
   initial_thread->tid = allocate_tid ();
   
-   sema_init(&initial_thread->timer_sema, 0);
+   sema_init(&t->timer_sema, 0);
 
 }
 
@@ -220,7 +220,6 @@ thread_block (void)
   ASSERT (intr_get_level () == INTR_OFF);
 
   thread_current ()->status = THREAD_BLOCKED;
-  sema_down(&thread_current ()->timer_sema);
   schedule ();
 }
 
@@ -243,7 +242,6 @@ thread_unblock (struct thread *t)
   ASSERT (t->status == THREAD_BLOCKED);
   list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
-  sema_up(&t->timer_sema);
   intr_set_level (old_level);
 }
 
